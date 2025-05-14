@@ -1,6 +1,6 @@
 package com.jobportal.polaris_backend.utility;
 
-import com.jobportal.polaris_backend.entity.Sequence;
+import com.jobportal.polaris_backend.entity.SequenceEntity;
 import com.jobportal.polaris_backend.exception.JobPortalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -28,7 +28,7 @@ public class Utilities {
         update.inc("seq", 1);
         FindAndModifyOptions options = new FindAndModifyOptions();
         options.returnNew(true);
-        Sequence seq = mongoOperation.findAndModify(query, update, options, Sequence.class);
+        SequenceEntity seq = mongoOperation.findAndModify(query, update, options, SequenceEntity.class);
         if(seq==null) try {
             throw new JobPortalException("Unable to get sequence id for key : " + key);
         } catch (JobPortalException e) {

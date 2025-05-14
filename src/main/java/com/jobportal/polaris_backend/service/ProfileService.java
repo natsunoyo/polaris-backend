@@ -1,7 +1,7 @@
 package com.jobportal.polaris_backend.service;
 
 import com.jobportal.polaris_backend.dto.ProfileDTO;
-import com.jobportal.polaris_backend.entity.Profile;
+import com.jobportal.polaris_backend.entity.ProfileEntity;
 import com.jobportal.polaris_backend.exception.JobPortalException;
 import com.jobportal.polaris_backend.repository.IProfileRepository;
 import com.jobportal.polaris_backend.utility.Utilities;
@@ -18,7 +18,7 @@ public class ProfileService implements IProfileService{
 
     @Override
     public Long createProfile(String email) throws JobPortalException {
-        Profile profile = new Profile();
+        ProfileEntity profile = new ProfileEntity();
         profile.setId(Utilities.getNextSequence("profiles"));
         profile.setEmail(email);
         profile.setSkills(new ArrayList<>());

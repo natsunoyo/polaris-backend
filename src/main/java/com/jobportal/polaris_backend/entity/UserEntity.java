@@ -14,7 +14,7 @@ import lombok.Data;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection="users")
-public class User {
+public class UserEntity {
     @Id
     private Long id;
     private String name;

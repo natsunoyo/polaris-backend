@@ -3,8 +3,8 @@ package com.jobportal.polaris_backend.service;
 import com.jobportal.polaris_backend.dto.LoginDTO;
 import com.jobportal.polaris_backend.dto.ResponseDTO;
 import com.jobportal.polaris_backend.dto.UserDTO;
-import com.jobportal.polaris_backend.entity.OTP;
-import com.jobportal.polaris_backend.entity.User;
+import com.jobportal.polaris_backend.entity.OTPEntity;
+import com.jobportal.polaris_backend.entity.UserEntity;
 import com.jobportal.polaris_backend.exception.JobPortalException;
 import com.jobportal.polaris_backend.repository.IUserRepository;
 
@@ -43,19 +43,19 @@ public class UserService implements IUserService {
 
     @Override
     public UserDTO registerUser(UserDTO userDTO) throws JobPortalException {
-        Optional<User> optional = iUserRepository.findByEmail(userDTO.getEmail());
+        Optional<UserEntity> optional = iUserRepository.findByEmail(userDTO.getEmail());
         if (optional.isPresent()) throw new JobPortalException("USER_FOUND");
         userDTO.setProfileId(iProfileService.createProfile(userDTO.getEmail()));
         userDTO.setId(Utilities.getNextSequence("users"));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        User user = userDTO.toEntity();
+        UserEntity user = userDTO.toEntity();
         user = iUserRepository.save(user);
         return user.toDTO();
     }
 
     @Override
     public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException {
-        User user = iUserRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        UserEntity user = iUserRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword()))
             throw new JobPortalException("INVALID_CREDENTIALS");
         return user.toDTO();
@@ -63,13 +63,13 @@ public class UserService implements IUserService {
 
     @Override
     public Boolean sendOtp(String email) throws Exception {
-        User user = iUserRepository.findByEmail(email).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        UserEntity user = iUserRepository.findByEmail(email).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         MimeMessage mm = mailSender.createMimeMessage();
         MimeMessageHelper message = new MimeMessageHelper(mm, true);
         message.setTo(email);
         message.setSubject("Підтвердіть свій аккаунт");
         String genOtp = Utilities.generateOTP();
-        OTP otp = new OTP(email, genOtp, LocalDateTime.now());
+        OTPEntity otp = new OTPEntity(email, genOtp, LocalDateTime.now());
         iotpRepository.save(otp);
         message.setText(Data.getMessageBody(genOtp, user.getName()), true);
         mailSender.send(mm);
@@ -78,14 +78,14 @@ public class UserService implements IUserService {
 
     @Override
     public Boolean verifyOtp(String email, String otp) throws JobPortalException {
-        OTP otpEntity = iotpRepository.findById(email).orElseThrow(()->new JobPortalException("OTP_NOT_FOUND"));
+        OTPEntity otpEntity = iotpRepository.findById(email).orElseThrow(()->new JobPortalException("OTP_NOT_FOUND"));
         if(!otpEntity.getOtpCode().equals(otp))throw new JobPortalException("OTP_INCORRECT");
         return true;
     }
 
     @Override
     public ResponseDTO changePassword(LoginDTO loginDTO) throws JobPortalException {
-        User user = iUserRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        UserEntity user = iUserRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
         iUserRepository.save(user);
         return new ResponseDTO("Пароль успішно змінено");
@@ -94,7 +94,7 @@ public class UserService implements IUserService {
     @Scheduled(fixedRate = 600000)
     public void removeExpiredOTP() {
         LocalDateTime expiry = LocalDateTime.now().minusMinutes(10);
-        List<OTP>expiredOTPs=iotpRepository.findByCreationTimeBefore(expiry);
+        List<OTPEntity>expiredOTPs=iotpRepository.findByCreationTimeBefore(expiry);
         if(!expiredOTPs.isEmpty()){
             iotpRepository.deleteAll(expiredOTPs);
             System.out.println("Removed " + expiredOTPs.size() + " expired OTPs.");

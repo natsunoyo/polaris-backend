@@ -1,6 +1,6 @@
 package com.jobportal.polaris_backend.dto;
 
-import com.jobportal.polaris_backend.entity.User;
+import com.jobportal.polaris_backend.entity.UserEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -24,7 +24,7 @@ public class UserDTO {
     private AccountType accountType;
     private Long profileId;
 
-    public User toEntity() {
-        return new User(this.id, this.name, this.email, this.password, this.accountType, this.profileId);
+    public UserEntity toEntity() {
+        return new UserEntity(this.id, this.name, this.email, this.password, this.accountType, this.profileId);
     }
 }

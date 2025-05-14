@@ -24,7 +24,7 @@ public class Data {
                         "      Якщо у вас є питання — зверніться до служби підтримки." +
                         "    </div>" +
                 "    <hr style='margin: 40px 0; border: none; border-top: 1px solid #ddd;' />" +
-                "    <div style='text-align: center; font-size: 13px; color: #999;'>З повагою, команда <strong>Polaris Job Portal</strong></div>" +
+                "    <div style='text-align: center; font-size: 13px; color: #999;'>З повагою, команда <strong>Polaris JobEntity Portal</strong></div>" +
                 "  </div>" +
                 "</body>" +
                 "</html>";

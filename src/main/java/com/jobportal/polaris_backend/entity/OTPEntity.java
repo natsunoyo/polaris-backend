@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OTP {
+public class OTPEntity {
     @Id
     private String email;
     private String otpCode;

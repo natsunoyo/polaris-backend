@@ -14,4 +14,5 @@ public class Course {
     private String company;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private String certID;
 }
