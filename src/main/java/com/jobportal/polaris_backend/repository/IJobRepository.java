@@ -3,6 +3,8 @@ package com.jobportal.polaris_backend.repository;
 import com.jobportal.polaris_backend.entity.JobEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface IJobRepository extends MongoRepository<JobEntity, Long> {
+import java.util.List;
 
+public interface IJobRepository extends MongoRepository<JobEntity, Long> {
+public List<JobEntity>findByPostedBy(long postedBy);
 }

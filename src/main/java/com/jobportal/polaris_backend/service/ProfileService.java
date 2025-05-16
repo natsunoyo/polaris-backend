@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service("profileService")
 public class ProfileService implements IProfileService{
@@ -40,5 +41,10 @@ public class ProfileService implements IProfileService{
         iProfileRepository.save(profileDTO.toEntity());
         return profileDTO;
 
+    }
+
+    @Override
+    public List<ProfileDTO> getAllProfiles() {
+        return iProfileRepository.findAll().stream().map((x)->x.toDTO()).toList();
     }
 }

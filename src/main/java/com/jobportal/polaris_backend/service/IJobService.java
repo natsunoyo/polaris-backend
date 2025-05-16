@@ -1,5 +1,7 @@
 package com.jobportal.polaris_backend.service;
 
+import com.jobportal.polaris_backend.dto.ApplicantDTO;
+import com.jobportal.polaris_backend.dto.ApplicationDTO;
 import com.jobportal.polaris_backend.dto.JobDTO;
 import com.jobportal.polaris_backend.exception.JobPortalException;
 
@@ -11,4 +13,10 @@ public interface IJobService {
     List<JobDTO> getAllJobs();
 
     JobDTO getJob(Long id) throws JobPortalException;
+
+    void applyJob(Long id, ApplicantDTO applicantDTO) throws JobPortalException;
+
+    List<JobDTO> getJobsPostedBy(Long id);
+
+    void changeApplyStatus(ApplicationDTO applicationDTO)  throws JobPortalException;
 }

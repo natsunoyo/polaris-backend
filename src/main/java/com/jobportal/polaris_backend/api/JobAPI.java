@@ -1,7 +1,9 @@
 package com.jobportal.polaris_backend.api;
 
+import com.jobportal.polaris_backend.dto.ApplicantDTO;
+import com.jobportal.polaris_backend.dto.ApplicationDTO;
 import com.jobportal.polaris_backend.dto.JobDTO;
-import com.jobportal.polaris_backend.dto.ProfileDTO;
+import com.jobportal.polaris_backend.dto.ResponseDTO;
 import com.jobportal.polaris_backend.exception.JobPortalException;
 import com.jobportal.polaris_backend.service.IJobService;
 import jakarta.validation.Valid;
@@ -34,6 +36,23 @@ public class JobAPI {
     @GetMapping("/get/{id}")
     public ResponseEntity<JobDTO>getJob(@PathVariable Long id) throws JobPortalException {
         return new ResponseEntity<>(iJobService.getJob(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/apply/{id}")
+    public ResponseEntity<ResponseDTO>applyJob(@PathVariable Long id, @RequestBody ApplicantDTO applicantDTO) throws JobPortalException {
+        iJobService.applyJob(id, applicantDTO);
+        return new ResponseEntity<>(new ResponseDTO("Applied Successfully"), HttpStatus.OK);
+    }
+
+    @GetMapping("/postedBy/{id}")
+    public ResponseEntity<List<JobDTO>>getJobsPostedBy(@PathVariable Long id) throws JobPortalException {
+        return new ResponseEntity<>(iJobService.getJobsPostedBy(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/changeApplyStatus")
+    public ResponseEntity<ResponseDTO>changeApplyStatus(@RequestBody ApplicationDTO applicationDTO) throws JobPortalException {
+        iJobService.changeApplyStatus(applicationDTO);
+        return new ResponseEntity<>(new ResponseDTO("Application Status Changed Successfully"), HttpStatus.OK);
     }
 
 }

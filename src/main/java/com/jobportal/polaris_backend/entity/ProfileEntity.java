@@ -19,6 +19,7 @@ import java.util.List;
 public class ProfileEntity {
     @Id
     private Long id;
+    private String name;
     private String email;
     private String jobTitle;
     private String location;
@@ -28,8 +29,11 @@ public class ProfileEntity {
     private List<String> skills;
     private List<Education> educations;
     private List<Course> courses;
+    private List<Long>savedJobs;
+
     public ProfileDTO toDTO() {
-        return new ProfileDTO(this.id, this.email, this.jobTitle, this.location, this.eduLevel,
-                this.bio, this.picture!=null? Base64.getEncoder().encodeToString(this.picture):null, this.skills, this.educations, this.courses);
+        return new ProfileDTO(this.id, this.name,this.email, this.jobTitle, this.location, this.eduLevel,
+                this.bio, this.picture!=null? Base64.getEncoder().encodeToString(this.picture):null,
+                this.skills, this.educations, this.courses, this.savedJobs);
     }
 }
