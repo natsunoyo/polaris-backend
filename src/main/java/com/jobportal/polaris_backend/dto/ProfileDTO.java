@@ -20,6 +20,7 @@ public class ProfileDTO {
     private String eduLevel;
     private String bio;
     private String picture;
+    private Long expectedSalary;
     private List<String> skills;
     private List<Education>educations;
     private List <Course> courses;
@@ -28,6 +29,6 @@ public class ProfileDTO {
     public ProfileEntity toEntity() {
         return new ProfileEntity(this.id, this.name, this.email, this.jobTitle, this.location, this.eduLevel,
                 this.bio, this.picture!=null? Base64.getDecoder().decode(this.picture):null,
-                this.skills, this.educations, this.courses, this.savedJobs);
+                this.expectedSalary, this.skills, this.educations, this.courses, this.savedJobs);
     }
 }

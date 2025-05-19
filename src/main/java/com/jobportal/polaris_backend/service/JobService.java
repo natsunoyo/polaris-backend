@@ -1,9 +1,6 @@
 package com.jobportal.polaris_backend.service;
 
-import com.jobportal.polaris_backend.dto.ApplicantDTO;
-import com.jobportal.polaris_backend.dto.ApplicationDTO;
-import com.jobportal.polaris_backend.dto.ApplicationStatus;
-import com.jobportal.polaris_backend.dto.JobDTO;
+import com.jobportal.polaris_backend.dto.*;
 import com.jobportal.polaris_backend.entity.ApplicantEntity;
 import com.jobportal.polaris_backend.entity.JobEntity;
 import com.jobportal.polaris_backend.exception.JobPortalException;
@@ -23,8 +20,14 @@ public class JobService implements IJobService {
 
     @Override
     public JobDTO postJob(JobDTO jobDTO) throws JobPortalException {
+        if(jobDTO.getId() ==0){
         jobDTO.setId(Utilities.getNextSequence("jobs"));
         jobDTO.setPostTime(LocalDateTime.now());
+        }
+        else{
+            JobEntity job = iJobRepository.findById(jobDTO.getId()).orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
+            if(job.getJobStatus().equals(JobStatus.DRAFT) ||jobDTO.getJobStatus().equals(JobStatus.CLOSED)) jobDTO.setPostTime(LocalDateTime.now());
+        }
         return iJobRepository.save(jobDTO.toEntity()).toDTO();
     }
 

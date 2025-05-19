@@ -50,6 +50,8 @@ public class UserService implements IUserService {
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         UserEntity user = userDTO.toEntity();
         user = iUserRepository.save(user);
+        iProfileService.updateProfileName(user.getProfileId(), user.getName());
+
         return user.toDTO();
     }
 

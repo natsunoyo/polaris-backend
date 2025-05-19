@@ -13,4 +13,6 @@ public interface IProfileService {
     ProfileDTO updateProfile(ProfileDTO profileDTO) throws JobPortalException;
 
     List<ProfileDTO> getAllProfiles();
+
+    void updateProfileName(Long profileId, String name);
 }

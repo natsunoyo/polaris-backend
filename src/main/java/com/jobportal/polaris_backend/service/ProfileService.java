@@ -47,4 +47,11 @@ public class ProfileService implements IProfileService{
     public List<ProfileDTO> getAllProfiles() {
         return iProfileRepository.findAll().stream().map((x)->x.toDTO()).toList();
     }
-}
+
+    @Override
+    public void updateProfileName(Long profileId, String name) {
+        iProfileRepository.findById(profileId).ifPresent(profile -> {
+            profile.setName(name);
+            iProfileRepository.save(profile);
+        });
+}}
